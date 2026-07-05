@@ -1,3 +1,8 @@
+---
+name: apiyi-image-gen
+description: Use when generating, creating, or editing images, photos, illustrations, covers, banners, logos, icons, wallpapers, visual assets, or Chinese image requests such as 生成图片、画图、出图、做封面、做图标、生成插图、壁纸, using the apiyi OpenAI-compatible image API.
+---
+
 # apiyi-image-gen
 
 AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) — a unified proxy that exposes GPT Image 2, Doubao SeedDream, and other models under a single OpenAI-compatible API.
