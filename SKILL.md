@@ -7,7 +7,7 @@ description: Use when generating, creating, or editing images, photos, illustrat
 
 AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) — a unified proxy that exposes GPT Image 2, Doubao SeedDream, and other models under a single OpenAI-compatible API.
 
-**Trigger this skill when:** the user asks to generate, create, or produce an image, photo, illustration, cover, banner, logo, icon, or any visual asset — including Chinese requests: 生成图片、画图、出图、做封面、做 banner、做 logo、做图标、生成插图、画一张、帮我画、创作图像、制作海报、做壁纸、生成壁纸、mac 壁纸、桌面壁纸。
+**Trigger this skill when:** the user asks to generate, create, or produce an image, photo, illustration, cover, banner, logo, icon, or any visual asset — including Chinese requests: 生成图片、画图、出图、做封面、做 banner、做 logo、做图标、生成插图、画一张、帮我画、创作图像、制作海报、做壁纸、生成壁纸、mac 壁纸、桌面壁纸、动态壁纸、dynamic wallpaper。
 
 ---
 
@@ -52,7 +52,8 @@ Alias resolution and cascade variables (`$MODEL_GPT` / `$MODEL_DOUBAO` / `$MODEL
 | Portrait / illustration | `848×1280` | GPT → Doubao → Nano |
 | High-allure (T3+) | `1664×2496` | Doubao → Nano |
 | Logo / favicon | `1920×1920` | Doubao → GPT |
-| **Mac wallpaper** | `3840×2160` (16:9 4K) | GPT → Doubao `2560×1600` → Nano |
+| **Mac wallpaper (static)** | `3840×2160` (16:9 4K) | GPT → Doubao `2560×1600` → Nano |
+| **Mac dynamic wallpaper** | `3840×2160` × 8 frames | GPT → Doubao `2560×1600` → Nano |
 
 Full model specs are in `references/apiyi.md`.
 
@@ -65,6 +66,10 @@ Every generated image is:
 - **Intermediate:** PNG written to `/tmp/` — deleted after WebP conversion
 - **Deliverable:** `.webp` + optional `.json` metadata file (model, size, prompt)
 
+**Exception — Mac static wallpaper:** save as lossless PNG (`wallpaper.png`). Do NOT convert to WebP. Move directly: `mv "$OUTPUT_PATH" "$OUT_DIR/wallpaper.png"`.
+
+**Exception — Mac dynamic wallpaper:** generate 8 PNG frames, package into `.heic` (HEIF multi-image with `apple_desktop:h24` XMP). Do NOT convert to WebP. Follow `references/dynamic-wallpaper.md` for the full pipeline.
+
 Post-process steps (resize, doubao watermark crop, WebP conversion) are in `references/post-process.md`.
 
 ---
@@ -74,3 +79,4 @@ Post-process steps (resize, doubao watermark crop, WebP conversion) are in `refe
 - `references/apiyi.md` — Authentication, base URL, all model specs, error handling
 - `references/generation.md` — `gen_image_apiyi` function, cascade logic, parallel batch pattern
 - `references/post-process.md` — WebP conversion, doubao watermark crop, resize by model
+- `references/dynamic-wallpaper.md` — Mac dynamic wallpaper: 8-frame generation + HEIC packaging with h24 metadata
