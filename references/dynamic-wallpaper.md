@@ -102,7 +102,8 @@ if dark.size != light.size:
     dark = dark.resize(light.size, Image.LANCZOS)
 
 # apr plist: frame 0 = light, frame 1 = dark
-plist_data = plistlib.dumps({"ap": {"l": 0, "d": 1}}, fmt=plistlib.FMT_BINARY)
+# 注意：根层直接 {l, d}，不要套 ap 外层（h24 才有 ap 包装）
+plist_data = plistlib.dumps({"l": 0, "d": 1}, fmt=plistlib.FMT_BINARY)
 apr_b64 = base64.b64encode(plist_data).decode()
 
 # XMP — attribute form (matches Apple's format exactly)
