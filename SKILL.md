@@ -53,7 +53,7 @@ Alias resolution and cascade variables (`$MODEL_GPT` / `$MODEL_DOUBAO` / `$MODEL
 | High-allure (T3+) | `1664×2496` | Doubao → Nano |
 | Logo / favicon | `1920×1920` | Doubao → GPT |
 | **Mac wallpaper (static)** | `3840×2160` (16:9 4K) | GPT → Doubao `2560×1600` → Nano |
-| **Mac dynamic wallpaper** | `3840×2160` × 8 frames | GPT → Doubao `2560×1600` → Nano |
+| **Mac dynamic wallpaper (apr)** | `3840×2160` × 2 frames | GPT → Doubao `2560×1600` → Nano |
 
 Full model specs are in `references/apiyi.md`.
 
@@ -68,7 +68,7 @@ Every generated image is:
 
 **Exception — Mac static wallpaper:** save as lossless PNG (`wallpaper.png`). Do NOT convert to WebP. Move directly: `mv "$OUTPUT_PATH" "$OUT_DIR/wallpaper.png"`.
 
-**Exception — Mac dynamic wallpaper:** generate 8 PNG frames, package into `.heic` (HEIF multi-image with `apple_desktop:h24` XMP). Do NOT convert to WebP. Follow `references/dynamic-wallpaper.md` for the full pipeline.
+**Exception — Mac dynamic wallpaper:** generate 2 PNG frames (light + dark), package into `.heic` with `apple_desktop:apr` XMP. Do NOT convert to WebP. Follow `references/dynamic-wallpaper.md` for the full pipeline.
 
 Post-process steps (resize, doubao watermark crop, WebP conversion) are in `references/post-process.md`.
 
