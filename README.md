@@ -24,6 +24,8 @@ Make a RunCat-style menu bar sprite loop of a tiny robot running
 
 The skill routes each image type to the right GPT workflow, post-processes output, and saves files to `~/Pictures/better-image-gen/`.
 
+It also applies a GPT Image 2 prompt compliance layer before generation: prompts are normalized away from platform logos, exact in-image text, explicit content, graphic violence, and living-artist imitation so routine creative requests are less likely to be rejected accidentally.
+
 ---
 
 ## Model
@@ -55,7 +57,7 @@ Full 30-preset table in `references/apiyi.md`.
 | Mac static wallpaper (4K) | GPT | `wallpaper.png` (lossless PNG) |
 | Mac dynamic wallpaper | GPT | `wallpaper-apr.heic` (2-frame, Light/Dark) |
 | Sprite loop | GPT | numbered PNG frames + `preview.gif` |
-| High-allure content (T3+) | GPT with softened prompt if needed | `.webp` q78 |
+| High-allure content (T3+) | GPT with compliance-normalized prompt if needed | `.webp` q78 |
 | Batch (N images) | GPT per image | N × `.webp`, generated in parallel |
 
 ---
@@ -131,6 +133,7 @@ SKILL.md                      ← skill entry point & trigger rules
 references/
   apiyi.md                    ← API auth, GPT model specs, size tables, error codes
   generation.md               ← API key check, model aliases, gen_image_apiyi, metadata helpers
+  prompt-compliance.md        ← GPT Image 2 prompt normalization and retry policy
   post-process.md             ← WebP conversion, resize, PNG compression
   portrait.md                 ← portraits, covers, banners, general single images
   high-allure.md              ← suggestive romance/editorial images

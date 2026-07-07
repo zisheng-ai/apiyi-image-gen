@@ -4,6 +4,7 @@ Use for suggestive but non-explicit romance covers, ad creatives, fashion/editor
 
 Load first:
 - `references/generation.md`
+- `references/prompt-compliance.md`
 - `references/post-process.md`
 
 ---
@@ -18,7 +19,7 @@ Load first:
 | Primary size | `1664x2496` |
 | Model flow | GPT primary → softened GPT retry |
 
-Keep prompts suggestive but non-explicit. If GPT rejects the first prompt, soften fabric-failure, nudity, or explicit proximity wording and retry GPT once.
+Keep prompts suggestive but non-explicit. Run the prompt through the compliance layer first. If GPT rejects the first prompt, soften fabric-failure, nudity, explicit proximity, platform/brand, or exact-text wording and retry GPT once.
 
 ---
 

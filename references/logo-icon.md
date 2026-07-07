@@ -4,6 +4,7 @@ Use for logos, favicons, app icon source art, stickers, badges, mascots, cutouts
 
 Load first:
 - `references/generation.md`
+- `references/prompt-compliance.md`
 - `references/post-process.md`
 
 ---

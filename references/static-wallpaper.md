@@ -4,6 +4,7 @@ Use for static desktop wallpapers, including MacBook wallpapers, 4K wallpapers, 
 
 Load first:
 - `references/generation.md`
+- `references/prompt-compliance.md`
 
 Do not convert wallpapers to WebP. Save lossless PNG.
 

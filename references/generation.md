@@ -1,6 +1,6 @@
 # Image Generation — GPT-Only Core
 
-Load this reference before generating any image. It provides the `gen_image_apiyi` shell function, GPT model setup, metadata helpers, and batch parallelism patterns.
+Load this reference before generating any image, then load `references/prompt-compliance.md` before composing the final outbound prompt. It provides the `gen_image_apiyi` shell function, GPT model setup, metadata helpers, and batch parallelism patterns.
 
 ---
 
@@ -27,7 +27,7 @@ This skill supports GPT image generation only.
 MODEL_GPT="gpt-image-2-all"
 ```
 
-Do not use model override environment variables or secondary model slots. If GPT fails, soften the prompt once when appropriate, retry GPT once, then report the failure.
+Do not use model override environment variables or secondary model slots. If GPT fails, normalize/soften the prompt once with `references/prompt-compliance.md` when appropriate, retry GPT once, then report the failure.
 
 ---
 
@@ -125,7 +125,7 @@ On success it also prints machine-readable lines:
 ```bash
 gen_image_apiyi() {
   local model="$1" size="$2" output_path="$3"
-  local prompt_json start_ms end_ms status
+  local prompt_json start_ms end_ms cmd_status
   prompt_json=$(printf '%s' "$PROMPT" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))')
   start_ms=$(python3 - <<'PY'
 import time
@@ -163,14 +163,14 @@ else:
 print('SAVED:' + str(os.path.getsize(output_path)))
 print('RESPONSE_FORMAT:' + response_format)
 "
-  status=$?
+  cmd_status=$?
   end_ms=$(python3 - <<'PY'
 import time
 print(int(time.time() * 1000))
 PY
 )
   echo "ELAPSED_MS:$((end_ms - start_ms))"
-  return "$status"
+  return "$cmd_status"
 }
 ```
 
@@ -209,7 +209,7 @@ Do not finish the task without this summary. If an image failed, include it sepa
 
 ## Prompt Softening
 
-If the primary model returns an error containing `invalid_prompt` / `safety` / `rejected`, replace triggering terms and retry once:
+Apply `references/prompt-compliance.md` before the first request. If the primary model returns an error containing `invalid_prompt` / `safety` / `rejected` / `SOFT_REJECT`, replace triggering terms and retry once:
 
 | Replace | With |
 |---------|------|
@@ -222,7 +222,7 @@ If the primary model returns an error containing `invalid_prompt` / `safety` / `
 | `lips pressed against` | `faces close, the moment before` |
 | `erotic`, `sexual`, `explicit` | `alluring`, `intimate atmosphere`, `romantic tension` |
 
-After softening, retry GPT once. If it still fails, skip and log.
+Also remove platform names, third-party brand marks, exact in-image text, and aggressive marketing words when they are not essential to the requested visual. After softening, retry GPT once. If it still fails, skip and log.
 
 ---
 

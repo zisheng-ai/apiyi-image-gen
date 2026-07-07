@@ -20,10 +20,11 @@ AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff
 
 1. Check for API key: `[ -n "$APIYI_API_KEY" ] && echo "ready" || echo "missing key"`
 2. If missing: tell the user to set their key — `export APIYI_API_KEY="your-key"` — and register at https://api.apiyi.com/register/?aff_code=ijv5 to get one.
-3. Load `references/generation.md` and the one type-specific reference from the routing table below.
-4. Generate with GPT using that type's reference and post-process with `references/post-process.md` when the type requires it.
+3. Load `references/generation.md`, then `references/prompt-compliance.md`, then the one type-specific reference from the routing table below.
+4. Normalize the outbound prompt through the compliance layer before calling GPT.
+5. Generate with GPT using that type's reference and post-process with `references/post-process.md` when the type requires it.
 
-**Always load `references/generation.md` before generating any image. Load only the type-specific reference needed for the request.**
+**Always load `references/generation.md` and `references/prompt-compliance.md` before generating any image. Load only the type-specific reference needed for the request.**
 
 ---
 
@@ -42,7 +43,7 @@ Only one model is supported:
 | Use case | Default size | Model order |
 |---|---|---|
 | Portrait / illustration | `848×1280` | GPT |
-| High-allure (T3+) | `848×1280` | GPT with softened prompt if needed |
+| High-allure (T3+) | `848×1280` | GPT with compliance-normalized/softened prompt if needed |
 | Logo / favicon | `1280×1280` | GPT |
 | **Mac wallpaper (static)** | `3840×2160` (16:9 4K) | GPT |
 | **Mac dynamic wallpaper (apr)** | `3840×2160` × 2 frames | GPT |
@@ -114,6 +115,7 @@ When the user asks for a logo, icon, app icon source art, favicon, mascot sticke
 
 - `references/apiyi.md` — Authentication, base URL, GPT model specs, error handling
 - `references/generation.md` — API key check, GPT model setup, `gen_image_apiyi`, metadata helpers, batch skeleton
+- `references/prompt-compliance.md` — GPT Image 2 prompt normalization, safety boundary, rejection retry policy
 - `references/post-process.md` — WebP conversion, resize, PNG compression
 - `references/portrait.md` — portraits, covers, banners, hero images, general single-image pipeline
 - `references/high-allure.md` — suggestive romance/editorial imagery with GPT prompt-softening rules

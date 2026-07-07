@@ -4,6 +4,7 @@ Use for portraits, editorial illustrations, book covers, banners, hero images, p
 
 Load first:
 - `references/generation.md`
+- `references/prompt-compliance.md`
 - `references/post-process.md`
 
 ---
@@ -27,7 +28,7 @@ Use user-requested aspect ratio when clear. Otherwise choose:
 
 ## Prompt Requirements
 
-Write a complete scene prompt with:
+Normalize the outbound prompt through `references/prompt-compliance.md`, then write a complete scene prompt with:
 - subject
 - setting
 - composition

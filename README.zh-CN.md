@@ -24,6 +24,8 @@
 
 技能按图片类型选择 GPT 工作流、后处理输出，并保存到 `~/Pictures/better-image-gen/`。
 
+生成前会先过一层 GPT Image 2 提示词合规化：自动弱化平台 Logo、图片内精确文字、露骨内容、血腥暴力、模仿在世艺术家等高风险表达，减少正常创意需求被误拒的概率。
+
 ---
 
 ## 模型
@@ -130,6 +132,7 @@ SKILL.md                      ← 技能入口与触发规则
 references/
   apiyi.md                    ← API 鉴权、模型规格、尺寸表、错误码
   generation.md               ← API Key 检查、模型别名、gen_image_apiyi、metadata helper
+  prompt-compliance.md        ← GPT Image 2 提示词合规化与重试策略
   post-process.md             ← WebP 转换、尺寸调整、PNG 压缩
   portrait.md                 ← 人像、封面、banner、通用单图
   high-allure.md              ← 高质感 romance / editorial 图片

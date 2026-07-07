@@ -6,6 +6,7 @@ The professional term to use in this skill is **sprite loop**: a frame-by-frame 
 
 Load first:
 - `references/generation.md`
+- `references/prompt-compliance.md`
 - `references/post-process.md`
 
 ---

@@ -28,6 +28,8 @@ python3 -c "import pillow_heif; print('OK', pillow_heif.__version__)" || \
 
 ## Prompt Template
 
+Normalize both frame prompts through `references/prompt-compliance.md` before generation.
+
 ```bash
 THEME="<user's wallpaper subject>"
 
