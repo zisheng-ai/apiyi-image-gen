@@ -30,8 +30,6 @@ It also applies a GPT Image 2 prompt compliance layer before generation: prompts
 
 ## Model
 
-One model, one API key.
-
 | Model | Best for | Sizes |
 |-------|----------|-------|
 | `gpt-image-2-all` | Photorealistic photos, portraits, product shots, wallpapers, sprite sheets | 30 presets |
