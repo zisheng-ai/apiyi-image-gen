@@ -62,7 +62,6 @@ Pick one type reference per task:
 | Request | Load |
 |---|---|
 | Portrait, cover, banner, hero, illustration, product image | `references/portrait.md` |
-| Competition entry cover, showcase cover, hackathon/project submission cover, portfolio hero, product demo thumbnail | `references/competition-cover.md` |
 | Suggestive romance/ad creative likely to trigger GPT safety filters | `references/high-allure.md` |
 | Logo, favicon, app icon source art, mascot sticker, transparent cutout | `references/logo-icon.md` |
 | Static Mac/desktop wallpaper | `references/static-wallpaper.md` |
@@ -124,7 +123,6 @@ When the user asks for a logo, icon, app icon source art, favicon, mascot sticke
 - `references/prompt-compliance.md` — GPT Image 2 prompt normalization, safety boundary, rejection retry policy
 - `references/post-process.md` — WebP conversion, resize, PNG compression
 - `references/portrait.md` — portraits, covers, banners, hero images, general single-image pipeline
-- `references/competition-cover.md` — competition/showcase covers for finished works, with a clear hero object, signature effect, polished stage environment, and clean negative space
 - `references/high-allure.md` — suggestive romance/editorial imagery with GPT prompt-softening rules
 - `references/logo-icon.md` — transparent logos, icons, favicons, cutouts
 - `references/static-wallpaper.md` — Mac/static wallpaper PNG pipeline
