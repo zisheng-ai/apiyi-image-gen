@@ -72,6 +72,8 @@ Use **sprite loop** as the professional name for RunCat-like assets. Deliver it 
 
 When the user supplies a source image and requires the subject/character design to stay the same, ALWAYS route to `references/image-edit.md` — text-to-image regeneration drifts the design even with detailed prompts. If zero change is acceptable, offer a free local integer upscale (PIL NEAREST) before spending API calls.
 
+When the cover must carry a product name, tagline, module names, or feature bullets as **real, accurate text** (especially Chinese) — competition/大赛/黑客松 entry covers, launch key visuals, PPT hero slides — route to `references/text-poster.md`, NOT `portrait.md`. Image models garble structured text; that reference generates an atmospheric backdrop and composites an HTML/CSS text layer over it via headless Chrome.
+
 ---
 
 ## Output Convention
@@ -122,6 +124,7 @@ When the user asks for a logo, icon, app icon source art, favicon, mascot sticke
 - `references/prompt-compliance.md` — GPT Image 2 prompt normalization, safety boundary, rejection retry policy
 - `references/post-process.md` — WebP conversion, resize, PNG compression
 - `references/portrait.md` — portraits, covers, banners, hero images, general single-image pipeline
+- `references/text-poster.md` — text-heavy covers / competition (大赛/黑客松) entries: GPT atmospheric backdrop + HTML/CSS text layer composited via headless Chrome (accurate Chinese text, structured product info)
 - `references/logo-icon.md` — transparent logos, icons, favicons, cutouts
 - `references/static-wallpaper.md` — Mac/static wallpaper PNG pipeline
 - `references/dynamic-wallpaper.md` — Mac dynamic wallpaper: 2-frame Light/Dark HEIC with `apple_desktop:apr`
