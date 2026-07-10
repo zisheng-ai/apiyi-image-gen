@@ -6,12 +6,61 @@ resources. Triggers: "做成 mac 应用图标", "app icon", "Dock 图标", ".icn
 "把这个 logo 做成应用图标".
 
 This is a **post-processing pipeline on top of icon artwork**, not a new generation type. The
-art comes from `references/logo-icon.md` (or an existing image / website logo the user hands you).
-This reference turns that art into a native-looking icon.
+art can come from three places:
+
+1. **The user hands you an image / website logo** — go straight to Step 1.
+2. **The user references cutout art from `references/logo-icon.md`** — go straight to Step 1.
+3. **The user gives you NO image**, just "做一个 XX 的 mac 应用图标" — do **Step 0** first to
+   generate the icon art, then continue. This is common; do not ask the user for a source image
+   when the request is "make me an app icon for X".
 
 Load first:
-- `references/generation.md` (only if you still need to generate the art)
+- `references/generation.md` (for `gen_image_apiyi` + metadata helpers — always, since Step 0 and
+  the metadata write need it)
+- `references/prompt-compliance.md` (if generating in Step 0)
 - `references/post-process.md`
+
+---
+
+## Step 0 — no source image? generate the icon art first
+
+When the user gives no image, generate a **square, full-frame icon scene** (1024×1024), NOT a
+transparent cutout. An app icon needs a background; a full-bleed scene masks into a clean squircle
+in Step 1. (This is exactly how the Owlet owl-on-a-lake icon was made.)
+
+Prompt shape — a single centered subject on a self-contained background that fills the frame:
+
+```text
+A square app icon of <SUBJECT>. Single clear subject, centered, filling most of the frame with
+even margin. Self-contained <gradient / scene / solid> background that reaches all four edges.
+<style: e.g. cute pixel-art / flat / 3D glossy>. Cohesive palette: <colors>.
+no text, no letters, no words, no UI, no photo border, no drop shadow outside the artwork,
+no rounded-rectangle frame baked in, no app-store mockup.
+```
+
+Notes:
+- **Do not** append the `logo-icon.md` transparent-background block here — for an app icon you
+  WANT a filled background, not a cutout.
+- Tell the model **not** to bake its own rounded-rectangle tile/padding — we apply the squircle
+  ourselves. Models often ignore this and return a padded tile anyway; that's fine, the Step 1
+  autocrop removes the padding.
+- Generate at `1024x1024`, GPT → GPT retry → Gemini (same fallback as logo/icon; no Doubao — its
+  watermark crop wrecks icon edges).
+
+```bash
+OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-image-gen}"; mkdir -p "$OUT_DIR"
+ART="/tmp/icon_art.png"
+if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
+elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
+elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GEMINI"
+else echo "ICON_ART_GENERATION_FAILED"; exit 1
+fi
+# then feed $ART into Step 1 as SRC (SRC="$ART")
+```
+
+If instead you already have a **transparent cutout** (from `logo-icon.md`), skip the Step 1
+autocrop: paste the cutout centered onto a colored/gradient squircle you draw yourself, rather
+than masking padding off a scene.
 
 ---
 
