@@ -121,6 +121,47 @@ PY
 
 ## Core Function — `gen_image_apiyi`
 
+### Large-response safety invariant
+
+`b64_json` responses routinely exceed macOS `ARG_MAX`. Treat the response body as a byte stream, never as shell data.
+
+Forbidden patterns:
+
+```bash
+RESPONSE="$(curl ...)"
+RESPONSE="$RESPONSE" python3 ...
+python3 -c '...' "$RESPONSE"
+```
+
+These fail with `Argument list too long` after the API has already charged for and returned the image. Use exactly one of these safe shapes:
+
+```bash
+# Preferred: stream directly into the decoder.
+curl ... | OUTPUT_PATH="$output_path" python3 -c 'import sys; raw=sys.stdin.buffer.read(); ...'
+
+# When retry/debug inspection is useful: response file, then file-path argv only.
+response_file="$(mktemp -t apiyi-image-response).json"
+curl ... -o "$response_file"
+OUTPUT_PATH="$output_path" python3 decode_response.py "$response_file"
+rm -f "$response_file"
+```
+
+Only small metadata such as elapsed milliseconds, response format, and file size may be captured in shell variables. Before running any custom batch wrapper, search it for raw-response capture and reject it if `response=$(curl`, `RESPONSE=`, or a response body is passed to `python` through argv/environment.
+
+For parallel batches, every worker must own a unique response path derived from a validated non-empty item ID (or use `mktemp -d`). Never share `/tmp/response.json` across workers. In Bash, do not assign and derive locals in one declaration because expansions happen before the assignment:
+
+```bash
+# Wrong: id may expand from the previous/empty value of spec.
+local spec="$1" id="${spec%%|*}"
+
+# Correct.
+local spec id
+spec="$1"
+id="${spec%%|*}"
+[[ -n "$id" ]] || { echo "error: empty batch item id" >&2; return 2; }
+work_dir="$(mktemp -d -t "image-${id}")"
+```
+
 Generic generator. Handles both `b64_json` (PNG bytes) and `url` (CDN link) response formats.
 Returns `0` on success (file written), non-zero on any failure.
 On success it also prints machine-readable lines:

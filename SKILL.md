@@ -24,6 +24,8 @@ AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff
 4. Normalize the outbound prompt through the compliance layer before calling GPT.
 5. Generate with GPT using that type's reference and post-process with `references/post-process.md` when the type requires it.
 
+**Large-response safety (mandatory):** Image APIs may return multi-megabyte `b64_json`. Never capture the raw HTTP response with command substitution, assign it to a shell variable, export it as an environment variable, or pass it through argv. Decode directly from stdin or save the response to a temporary file and let Python read that file. See `references/generation.md`.
+
 **Always load `references/generation.md` and `references/prompt-compliance.md` before generating any image. Load only the type-specific reference needed for the request.**
 
 ---
