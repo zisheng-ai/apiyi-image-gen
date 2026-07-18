@@ -278,7 +278,7 @@ Also remove platform names, third-party brand marks, exact in-image text, and ag
 For multiple images, launch one background process per image and `wait` for all. The per-item GPT request and post-processing come from the selected type reference.
 
 ```bash
-OUT_DIR="$HOME/Pictures/better-image-gen"
+OUT_DIR="$HOME/Pictures/better-image"
 mkdir -p "$OUT_DIR"
 
 # Set PROMPT and OUTPUT_PATH per item, run in background

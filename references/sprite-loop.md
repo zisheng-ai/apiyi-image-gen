@@ -15,7 +15,7 @@ Load first:
 
 | Field | Value |
 |---|---|
-| Output directory | `~/Pictures/better-image-gen/sprite-loop/{slug}/` |
+| Output directory | `~/Pictures/better-image/sprite-loop/{slug}/` |
 | Source image | `sprite-sheet.png` |
 | Frame output | `frames/frame-001.png` ... |
 | Preview output | `preview.gif` |
@@ -51,7 +51,7 @@ For RunCat-like requests, default action is `running loop`, with side-view silho
 
 ```bash
 SLUG="${OUTPUT_NAME:-sprite-loop}"
-OUT_DIR="$HOME/Pictures/better-image-gen/sprite-loop/$SLUG"
+OUT_DIR="$HOME/Pictures/better-image/sprite-loop/$SLUG"
 FRAME_DIR="$OUT_DIR/frames"
 mkdir -p "$FRAME_DIR"
 

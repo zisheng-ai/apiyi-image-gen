@@ -1,4 +1,4 @@
-# better-image-gen
+# better-image
 
 **Claude Code 多模型 AI 生图技能** — 由 [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) 驱动，通过 OpenAI 兼容图片接口自动级联 GPT、Gemini 与豆包模型。
 
@@ -22,7 +22,7 @@
 做一张 Mac 动态壁纸，深海珊瑚礁，白天/夜晚切换
 ```
 
-技能按图片类型选择工作流，优先使用 GPT，失败时自动降级到 Gemini 和豆包，再完成后处理并保存到 `~/Pictures/better-image-gen/`。
+技能按图片类型选择工作流，优先使用 GPT，失败时自动降级到 Gemini 和豆包，再完成后处理并保存到 `~/Pictures/better-image/`。
 
 生成前会先过一层提示词合规化：自动弱化平台 Logo、图片内精确文字、露骨内容、血腥暴力、模仿在世艺术家等高风险表达，减少正常创意需求被误拒的概率。
 
@@ -71,7 +71,7 @@
 
 **依赖：** `pip3 install pillow-heif`（内置 libheif，无需 Homebrew）
 
-**输出路径：** `~/Pictures/better-image-gen/dynamic-wallpaper/wallpaper-apr.heic`
+**输出路径：** `~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic`
 
 > **macOS Sonoma 说明：** 时间型（h24）HEIC 动态壁纸在 Sonoma 上已失效——苹果将该格式迁移到私有 `.madesktop` 体系。亮/暗模式切换（apr）完全可用。
 
@@ -81,7 +81,7 @@
 
 用于 Runcat 类菜单栏动画、状态 mascot、loading loop、小型 App 动画。技能会先生成 sprite sheet，再切成编号 PNG 序列帧，写入 `manifest.json`，并打开 `preview.gif` 预览。
 
-**输出路径：** `~/Pictures/better-image-gen/sprite-loop/{name}/`
+**输出路径：** `~/Pictures/better-image/sprite-loop/{name}/`
 
 ---
 
@@ -89,10 +89,10 @@
 
 | 资产类型 | 格式 | 路径 |
 |---------|------|------|
-| 封面 / 插图 | 有损 WebP q78 | `~/Pictures/better-image-gen/{name}.webp` |
-| Mac 静态壁纸 | 无损 PNG | `~/Pictures/better-image-gen/wallpaper.png` |
-| Mac 动态壁纸 | 2 帧 HEIC | `~/Pictures/better-image-gen/dynamic-wallpaper/wallpaper-apr.heic` |
-| Sprite loop 帧动画 | PNG 序列帧 + preview GIF | `~/Pictures/better-image-gen/sprite-loop/{name}/` |
+| 封面 / 插图 | 有损 WebP q78 | `~/Pictures/better-image/{name}.webp` |
+| Mac 静态壁纸 | 无损 PNG | `~/Pictures/better-image/wallpaper.png` |
+| Mac 动态壁纸 | 2 帧 HEIC | `~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic` |
+| Sprite loop 帧动画 | PNG 序列帧 + preview GIF | `~/Pictures/better-image/sprite-loop/{name}/` |
 | Logo | PNG（pngquant） | 项目本地 |
 | 元数据 | JSON | 与图片同目录 |
 
