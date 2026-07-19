@@ -1,4 +1,4 @@
-# better-image
+# better-imagegen
 
 **A multi-model AI image generation Skill** — powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5), with automatic GPT, Gemini, and Doubao fallback through an OpenAI-compatible image API.
 
@@ -22,7 +22,7 @@ Make a RunCat-style menu bar sprite loop of a tiny robot running
 做一张 Mac 动态壁纸，深海珊瑚礁，白天/夜晚切换
 ```
 
-The skill routes each image type to the right workflow, tries GPT first, automatically falls back to Gemini and then Doubao when needed, post-processes output, and saves files to `~/Pictures/better-image/`.
+The skill routes each image type to the right workflow, tries GPT first, automatically falls back to Gemini and then Doubao when needed, post-processes output, and saves files to `~/Pictures/better-imagegen/`.
 
 It also applies a prompt compliance layer before generation: prompts are normalized away from platform logos, exact in-image text, explicit content, graphic violence, and living-artist imitation so routine creative requests are less likely to be rejected accidentally.
 
@@ -72,7 +72,7 @@ Make a dynamic wallpaper — underwater coral reef, day and night
 
 **Requirements:** `pip3 install pillow-heif` (bundles libheif, no Homebrew needed)
 
-**Output:** `~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic`
+**Output:** `~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic`
 
 > macOS Sonoma note: time-based (h24) HEIC wallpapers no longer work — Apple migrated that format to a private `.madesktop` system. Light/Dark (apr) works fully.
 
@@ -82,7 +82,7 @@ Make a dynamic wallpaper — underwater coral reef, day and night
 
 Use for RunCat-like frame animations, menu-bar status mascots, loading loops, and tiny app animations. The skill generates a sprite sheet, splits it into numbered PNG frames, writes `manifest.json`, and opens `preview.gif`.
 
-**Output:** `~/Pictures/better-image/sprite-loop/{name}/`
+**Output:** `~/Pictures/better-imagegen/sprite-loop/{name}/`
 
 ---
 
@@ -90,10 +90,10 @@ Use for RunCat-like frame animations, menu-bar status mascots, loading loops, an
 
 | Asset | Format | Location |
 |-------|--------|----------|
-| Cover / illustration | Lossy WebP q78 | `~/Pictures/better-image/{name}.webp` |
-| Mac static wallpaper | Lossless PNG | `~/Pictures/better-image/wallpaper.png` |
-| Mac dynamic wallpaper | 2-frame HEIC | `~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic` |
-| Sprite loop | PNG frames + preview GIF | `~/Pictures/better-image/sprite-loop/{name}/` |
+| Cover / illustration | Lossy WebP q78 | `~/Pictures/better-imagegen/{name}.webp` |
+| Mac static wallpaper | Lossless PNG | `~/Pictures/better-imagegen/wallpaper.png` |
+| Mac dynamic wallpaper | 2-frame HEIC | `~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic` |
+| Sprite loop | PNG frames + preview GIF | `~/Pictures/better-imagegen/sprite-loop/{name}/` |
 | Logo | PNG (pngquant) | project-local |
 | Metadata | JSON | alongside each image |
 

@@ -13,7 +13,7 @@ Load first:
 
 | Field | Value |
 |---|---|
-| Output directory | project-local when requested, otherwise `~/Pictures/better-image/` |
+| Output directory | project-local when requested, otherwise `~/Pictures/better-imagegen/` |
 | Final format | `.png` for transparency-critical assets |
 | Logo output | `512x512` PNG |
 | Favicon output | `256x256` PNG |
@@ -40,7 +40,7 @@ Do not ask for "a rounded app icon" unless the user wants the rounded tile baked
 ## Pipeline
 
 ```bash
-OUT_DIR="${PROJECT_OUT_DIR:-$HOME/Pictures/better-image}"
+OUT_DIR="${PROJECT_OUT_DIR:-$HOME/Pictures/better-imagegen}"
 mkdir -p "$OUT_DIR"
 OUTPUT_PATH="/tmp/logo_output.png"
 FINAL_PATH="$OUT_DIR/${OUTPUT_NAME:-logo}.png"

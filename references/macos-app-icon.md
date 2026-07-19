@@ -48,7 +48,7 @@ Notes:
   watermark crop wrecks icon edges).
 
 ```bash
-OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-image}"; mkdir -p "$OUT_DIR"
+OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-imagegen}"; mkdir -p "$OUT_DIR"
 ART="/tmp/icon_art.png"
 if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
 elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
@@ -181,7 +181,7 @@ python3 -c "from PIL import Image; Image.open('/tmp/icon_master.png').resize((51
 MASTER=/tmp/icon_master.png
 ICONSET=/tmp/AppIcon.iconset
 NAME="${ICON_NAME:-AppIcon}"     # base name for the .icns
-OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-image}"
+OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-imagegen}"
 mkdir -p "$OUT_DIR"
 rm -rf "$ICONSET" && mkdir -p "$ICONSET"
 gen() { python3 -c "from PIL import Image; Image.open('$MASTER').resize(($1,$1), Image.LANCZOS).save('$ICONSET/$2')"; }

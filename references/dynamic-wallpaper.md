@@ -42,7 +42,7 @@ PROMPT_DARK="${THEME}, deep night, moonlit, dark atmosphere, bioluminescent glow
 ## Generation — 2 Frames in Parallel
 
 ```bash
-OUT_DIR="$HOME/Pictures/better-image/dynamic-wallpaper"
+OUT_DIR="$HOME/Pictures/better-imagegen/dynamic-wallpaper"
 mkdir -p "$OUT_DIR"
 
 (
@@ -111,7 +111,7 @@ pillow_heif.register_heif_opener()
 
 light_path = "/tmp/dw_light.png"
 dark_path  = "/tmp/dw_dark.png"
-output = os.path.expanduser("~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic")
+output = os.path.expanduser("~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic")
 os.makedirs(os.path.dirname(output), exist_ok=True)
 
 light = Image.open(light_path).convert("RGB")
@@ -158,7 +158,7 @@ rm -f /tmp/dw_light.png /tmp/dw_dark.png
 ## Set as Wallpaper
 
 ```bash
-osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$HOME/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic\""
+osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$HOME/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic\""
 ```
 
 Wallpaper switches automatically with Light/Dark mode. No further action needed.
@@ -172,7 +172,7 @@ Wallpaper switches automatically with Light/Dark mode. No further action needed.
 2. Build THEME → PROMPT_LIGHT + PROMPT_DARK
 3. gen_image_apiyi × 2 in parallel → /tmp/dw_light.png + /tmp/dw_dark.png
    (if user provides an image, convert it and skip that API call)
-4. Run Python packaging script → ~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic
+4. Run Python packaging script → ~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic
 5. osascript to set as wallpaper
 6. Tell user: switches with Light/Dark mode toggle in System Settings > Appearance
 ```
@@ -185,4 +185,4 @@ Wallpaper switches automatically with Light/Dark mode. No further action needed.
 
 - **Format:** `.heic` (2-frame HEIF)
 - **No WebP conversion**
-- **Location:** `~/Pictures/better-image/dynamic-wallpaper/wallpaper-apr.heic`
+- **Location:** `~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic`

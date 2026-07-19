@@ -1,9 +1,9 @@
 ---
-name: better-image
+name: better-imagegen
 description: Use when generating, creating, or editing images, photos, illustrations, covers, banners, logos, icons, macOS app icons (.icns / iconset / Dock icon), wallpapers, sprite loops, frame animations, visual assets, or Chinese image requests such as 生成图片、画图、出图、做封面、做图标、做 mac 应用图标、生成插图、壁纸、帧动画、序列帧、Runcat 风格动画, using the apiyi OpenAI-compatible image API.
 ---
 
-# better-image
+# better-imagegen
 
 AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) using an OpenAI-compatible multi-model image API with automatic GPT, Gemini, and Doubao fallback.
 
@@ -87,7 +87,7 @@ Every generated image is:
 - **Format:** lossy WebP (q78 for covers/hero images, q72 for inline illustrations)
 - **Intermediate:** PNG written to `/tmp/` — deleted after WebP conversion
 - **Deliverable:** final image + required `.json` metadata file (model, requested size, actual resolution, file size, generation time, post-processing notes, prompt)
-- **Default directory:** `~/Pictures/better-image/`. Create it with `mkdir -p "$HOME/Pictures/better-image"` before writing deliverables.
+- **Default directory:** `~/Pictures/better-imagegen/`. Create it with `mkdir -p "$HOME/Pictures/better-imagegen"` before writing deliverables.
 
 After every generation task finishes, list every output image in the final response with:
 - file path

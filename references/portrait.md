@@ -13,7 +13,7 @@ Load first:
 
 | Field | Value |
 |---|---|
-| Output directory | `~/Pictures/better-image/` |
+| Output directory | `~/Pictures/better-imagegen/` |
 | Final format | `.webp` |
 | Quality | q78 |
 | Primary size | `848x1280` |
@@ -44,7 +44,7 @@ For book covers or ad creatives, make the image scroll-stopping in 0.3 seconds: 
 ## Pipeline
 
 ```bash
-OUT_DIR="$HOME/Pictures/better-image"
+OUT_DIR="$HOME/Pictures/better-imagegen"
 mkdir -p "$OUT_DIR"
 OUTPUT_PATH="/tmp/image_output.png"
 FINAL_PATH="$OUT_DIR/${OUTPUT_NAME:-image}.webp"

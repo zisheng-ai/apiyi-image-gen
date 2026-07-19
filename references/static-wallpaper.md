@@ -14,7 +14,7 @@ Do not convert wallpapers to WebP. Save lossless PNG.
 
 | Field | Value |
 |---|---|
-| Output directory | `~/Pictures/better-image/` |
+| Output directory | `~/Pictures/better-imagegen/` |
 | Final file | `wallpaper.png` |
 | Final format | PNG |
 | Primary size | `3840x2160` |
@@ -25,7 +25,7 @@ Do not convert wallpapers to WebP. Save lossless PNG.
 ## Pipeline
 
 ```bash
-OUT_DIR="$HOME/Pictures/better-image"
+OUT_DIR="$HOME/Pictures/better-imagegen"
 mkdir -p "$OUT_DIR"
 OUTPUT_PATH="/tmp/wallpaper_output.png"
 FINAL_PATH="$OUT_DIR/wallpaper.png"
@@ -56,5 +56,5 @@ open "$FINAL_PATH"
 After opening, ask the user: **「要设置为桌面壁纸吗？」** Wait for confirmation before running:
 
 ```bash
-osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$HOME/Pictures/better-image/wallpaper.png\""
+osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$HOME/Pictures/better-imagegen/wallpaper.png\""
 ```
