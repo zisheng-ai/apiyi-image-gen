@@ -1,13 +1,13 @@
 ---
 name: better-imagegen
-description: Use when generating, creating, or editing images, photos, illustrations, covers, banners, logos, icons, macOS app icons (.icns / iconset / Dock icon), wallpapers, sprite loops, frame animations, visual assets, or Chinese image requests such as 生成图片、画图、出图、做封面、做图标、做 mac 应用图标、生成插图、壁纸、帧动画、序列帧、Runcat 风格动画, using the apiyi OpenAI-compatible image API.
+description: Use when generating, creating, or editing images, photos, illustrations, covers, banners, logos, icons, macOS app icons (.icns / iconset / Dock icon), wallpapers, sprite loops, Codex-compatible v2 animated pets, frame animations, visual assets, or Chinese image requests such as 生成图片、画图、出图、做封面、做图标、做 mac 应用图标、生成插图、壁纸、帧动画、序列帧、Runcat 风格动画、Codex 宠物、宠物 spritesheet, using the apiyi OpenAI-compatible image API.
 ---
 
 # better-imagegen
 
 AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) using an OpenAI-compatible multi-model image API with automatic GPT, Gemini, and Doubao fallback.
 
-**Trigger this skill when:** the user asks to generate, create, or produce an image, photo, illustration, cover, banner, logo, icon, sprite animation, frame animation, or any visual asset — including Chinese requests: 生成图片、画图、出图、做封面、做 banner、做 logo、做图标、生成插图、画一张、帮我画、创作图像、制作海报、做壁纸、生成壁纸、mac 壁纸、桌面壁纸、动态壁纸、帧动画、逐帧动画、序列帧、Runcat 风格动画、dynamic wallpaper、做 mac 应用图标、app icon、Dock 图标、.icns、把 logo 做成应用图标 — and when the user provides an existing image to refine, upscale, or vary while keeping the same design: 图生图、改图、编辑图片、基于这张图、保持形象不变、更精致一点。
+**Trigger this skill when:** the user asks to generate, create, or produce an image, photo, illustration, cover, banner, logo, icon, sprite animation, **Codex pet / custom pet / pet spritesheet**, frame animation, or any visual asset — including Chinese requests: 生成图片、画图、出图、做封面、做 banner、做 logo、做图标、生成插图、画一张、帮我画、创作图像、制作海报、做壁纸、生成壁纸、mac 壁纸、桌面壁纸、动态壁纸、帧动画、逐帧动画、序列帧、Runcat 风格动画、Codex 宠物、制作宠物、宠物动画、宠物 spritesheet、8x11 宠物图集 — and when the user provides an existing image to refine, upscale, or vary while keeping the same design: 图生图、改图、编辑图片、基于这张图、保持形象不变、更精致一点。
 
 **Language:** Detect the user's language from their request. If the user writes in Chinese, respond entirely in Chinese (status updates, confirmations, questions, summaries). If English, respond in English. Never mix languages mid-response.
 
@@ -51,6 +51,7 @@ GPT is primary; every type falls back through Gemini, then Doubao (except sprite
 | **Mac wallpaper (static)** | `3840×2160` (16:9 4K) | GPT → Gemini → Doubao |
 | **Mac dynamic wallpaper (apr)** | `3840×2160` × 2 frames | GPT → Gemini → Doubao (per frame) |
 | **Sprite loop** | `1280×960` sheet → 12 frames | GPT → Gemini |
+| **Codex v2 pet** | `1536×2288` final atlas (8×11 cells) | GPT → Gemini, row-by-row |
 
 Full model specs are in `references/apiyi.md`.
 
@@ -69,11 +70,14 @@ Pick one type reference per task:
 | Static Mac/desktop wallpaper | `references/static-wallpaper.md` |
 | Light/Dark Mac dynamic wallpaper | `references/dynamic-wallpaper.md` |
 | RunCat-like menu-bar animation, loading mascot, frame animation, sequence frames | `references/sprite-loop.md` |
+| **Codex 宠物 / custom pet / pet.json / 8×11 pet spritesheet / existing pet repair or v2 upgrade** | `references/codex-pet.md` |
 | Existing image to refine/vary while keeping the same design (图生图/改图/保持形象) | `references/image-edit.md` |
 
 When the deliverable is a **real macOS app icon** (`.icns` + iconset, not just artwork) — "做成 mac 应用图标", "app icon", "Dock 图标", ".icns", "把这个 logo 做成应用图标" — route to `references/macos-app-icon.md`. That reference is a post-processing pipeline on top of icon art: autocrop any baked padding, apply one clean macOS squircle mask, then build the 10-size iconset via `iconutil`. Ship art as-is and you get a non-native "tile inside a tile" or sharp square corners.
 
 Use **sprite loop** as the professional name for RunCat-like assets. Deliver it as numbered PNG frames plus a preview GIF and manifest.
+
+**Codex pet is not a sprite loop.** A new Codex-compatible pet must follow `references/codex-pet.md`: build an 8×11 v2 atlas through grounded row generation, directional semantics and QA, and deliver only a reviewable package. Never auto-copy, install, register, update, or delete anything in `~/.codex/pets`; the user installs it through Codex/Owlet themselves.
 
 When the user supplies a source image and requires the subject/character design to stay the same, ALWAYS route to `references/image-edit.md` — text-to-image regeneration drifts the design even with detailed prompts. If zero change is acceptable, offer a free local integer upscale (PIL NEAREST) before spending API calls.
 
@@ -105,6 +109,8 @@ Use the summary helpers in `references/generation.md`; do not rely on memory or 
 **Exception — Mac dynamic wallpaper:** generate 2 PNG frames (light + dark), package into `.heic` with `apple_desktop:apr` XMP. Do NOT convert to WebP. Follow `references/dynamic-wallpaper.md` for the full pipeline.
 
 **Exception — sprite loop:** generate a sprite sheet, split into numbered PNG frames, produce `preview.gif`, and save `manifest.json`. Follow `references/sprite-loop.md`.
+
+**Exception — Codex v2 pet:** keep the final spritesheet as transparent PNG or WebP (never generic WebP conversion), produce `pet.json` with `spriteVersionNumber: 2`, and retain the required QA artifacts. Follow `references/codex-pet.md`.
 
 Post-process steps (resize, WebP conversion, PNG compression) are in `references/post-process.md`.
 
@@ -139,4 +145,5 @@ When the user asks for a logo, icon, app icon source art, favicon, mascot sticke
 - `references/static-wallpaper.md` — Mac/static wallpaper PNG pipeline
 - `references/dynamic-wallpaper.md` — Mac dynamic wallpaper: 2-frame Light/Dark HEIC with `apple_desktop:apr`
 - `references/sprite-loop.md` — RunCat-like sprite loops: sprite sheet → PNG frames + preview GIF + manifest
+- `references/codex-pet.md` — Codex-compatible v2 pets: 8×11 atlas, state/direction semantics, deterministic and visual QA, package-only delivery
 - `references/image-edit.md` — img2img via `/v1/images/edits`: faithful refinement of an existing image, batch frame edits, edge flood-fill background removal

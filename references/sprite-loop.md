@@ -39,6 +39,7 @@ Subject: <user subject>.
 Action: <loop action, e.g. running, breathing, typing, loading, bouncing>.
 Layout: 4 columns by 3 rows, 12 equal frames, left-to-right then top-to-bottom.
 Consistent character design, same scale, centered in every cell, transparent background, alpha channel.
+Keep the complete subject inside the central 76% of every cell, with at least 12% transparent safety padding on all four sides. Wings, tails, hair, props, effects, and shadows must never touch or cross a cell boundary. Keep a visibly empty transparent gutter between neighboring frames. Each cell must contain exactly one complete pose; never continue a clipped body part into the next cell and never leave a detached fragment from a neighboring pose.
 Clean silhouette readable at 22px menu-bar size. No text, no watermark, no grid lines in the final art.
 The first and last frames must connect smoothly for a seamless loop.
 ```
@@ -69,6 +70,13 @@ GENERATION_MS=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^ELAPSED_MS:/{v=$2} END{pri
 RESPONSE_FORMAT=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^RESPONSE_FORMAT:/{v=$2} END{print v}')
 
 mv "$OUTPUT_PATH" "$SHEET_PATH"
+
+# Hard gate: never split or deliver a sheet whose poses touch cell guard bands
+# or contain substantial detached fragments. Regenerate the source sheet instead.
+SKILL_DIR="${SKILL_DIR:-$HOME/.codex/skills/better-imagegen}"
+python3 "$SKILL_DIR/scripts/validate_sprite_cells.py" "$SHEET_PATH" \
+  --columns 4 --rows 3 --guard-ratio 0.08 \
+  --json-out "$OUT_DIR/cell-boundary-validation.json"
 
 python3 - "$SHEET_PATH" "$FRAME_DIR" "$OUT_DIR/preview.gif" <<'PY'
 import os, sys, json, time
@@ -128,6 +136,11 @@ open "$OUT_DIR/preview.gif"
 
 ## Quality Checks
 
+- **Mandatory clipping gate:** run `scripts/validate_sprite_cells.py` on the source sheet before splitting and again on any assembled atlas. A non-zero exit is a hard failure: regenerate/re-layout; do not erase the fragment, crop tighter, or claim the result is valid.
+- When the source sheet uses a flat matte instead of alpha, pass `--chroma-key '#RRGGBB'`; otherwise the matte hides slot-boundary crossings from an alpha-only check.
+- Every complete pose, including wings, tails, hair, glow, props, and shadows, must remain inside its cell's safety inset. Fixed-grid cropping is forbidden when foreground reaches the guard band.
+- Reject any cell with a substantial detached component. A fragment from the previous/next frame inside the nominal cell is still clipping corruption even when no pixel touches the final cell edge.
+- Inspect the split-frame contact sheet, not only the unsplit source. Check first/last frames and the widest pose at 4× on checkerboard and solid backgrounds.
 - At 22px, the silhouette should still read.
 - Character scale should remain stable across frames.
 - The first and last frames should loop without a visible jump.

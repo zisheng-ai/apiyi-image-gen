@@ -1,9 +1,9 @@
 # better-imagegen
 
-**A multi-model AI image generation Skill** — powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5), with automatic GPT, Gemini, and Doubao fallback through an OpenAI-compatible image API.
+**A general-purpose multi-model AI image generation Skill** — usable from any Agent runtime that supports `SKILL.md`, or by reusing its scripts directly. Powered by [apiyi](https://api.apiyi.com/register/?aff_code=ijv5), with automatic GPT, Gemini, and Doubao fallback through an OpenAI-compatible image API.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-blueviolet)](https://claude.ai/code)
+[![Agent Skill](https://img.shields.io/badge/Agent-Skill-blueviolet)](#)
 [![apiyi](https://img.shields.io/badge/Powered_by-apiyi-orange)](https://api.apiyi.com/register/?aff_code=ijv5)
 
 [English](#) · [中文](README.zh-CN.md)
@@ -12,13 +12,14 @@
 
 ## What It Does
 
-Invoke naturally in Claude Code — no commands, no config per-session:
+Describe the request naturally in any Agent that has this Skill enabled:
 
 ```
 Generate a cinematic portrait of a woman in a Tokyo street at night
 Make a square logo for my app, dark theme, minimalist
 Create 8 product images in parallel for my store
 Make a RunCat-style menu bar sprite loop of a tiny robot running
+Create a Codex-compatible pet: a plush lake otter with all 16 look directions
 做一张 Mac 动态壁纸，深海珊瑚礁，白天/夜晚切换
 ```
 
@@ -57,6 +58,7 @@ Full model specifications and size constraints are in `references/apiyi.md`.
 | Mac static wallpaper (4K) | GPT → Gemini → Doubao | `wallpaper.png` (lossless PNG) |
 | Mac dynamic wallpaper | GPT → Gemini → Doubao per frame | `wallpaper-apr.heic` (2-frame, Light/Dark) |
 | Sprite loop | GPT → Gemini | numbered PNG frames + `preview.gif` |
+| Codex v2 pet | GPT → Gemini | 8×11 spritesheet + `pet.json` + QA artifacts |
 | Batch (N images) | Cascade per image | N × `.webp`, generated in parallel |
 
 ---
@@ -84,6 +86,12 @@ Use for RunCat-like frame animations, menu-bar status mascots, loading loops, an
 
 **Output:** `~/Pictures/better-imagegen/sprite-loop/{name}/`
 
+## Codex-Compatible Pets (Optional Target Format)
+
+This is an optional adapter in the general pet-asset workflow, not a restriction on the skill. For Codex, it produces a `1536×2288` 8×11 v2 spritesheet, a `pet.json` with `spriteVersionNumber: 2`, 16 continuous look directions, and contact-sheet, motion, direction, chroma, and validation QA artifacts. It never auto-installs into any runtime directory; user-controlled installation and in-app verification remain outside the skill.
+
+**Output:** `~/Pictures/better-imagegen/codex-pet/{pet-id}/`
+
 ---
 
 ## Output Convention
@@ -94,6 +102,7 @@ Use for RunCat-like frame animations, menu-bar status mascots, loading loops, an
 | Mac static wallpaper | Lossless PNG | `~/Pictures/better-imagegen/wallpaper.png` |
 | Mac dynamic wallpaper | 2-frame HEIC | `~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic` |
 | Sprite loop | PNG frames + preview GIF | `~/Pictures/better-imagegen/sprite-loop/{name}/` |
+| Codex v2 pet | spritesheet + `pet.json` + QA artifacts | `~/Pictures/better-imagegen/codex-pet/{pet-id}/` |
 | Logo | PNG (pngquant) | project-local |
 | Metadata | JSON | alongside each image |
 
@@ -113,9 +122,10 @@ export APIYI_API_KEY="your-key-here"
 # Add to ~/.zshrc to persist across sessions
 ```
 
-**3. Install the skill**
+**3. Install it in your Agent's skill directory**
 ```bash
-git clone https://github.com/zisheng-ai/apiyi-image-gen ~/.claude/skills/apiyi-image-gen
+# Use the location and loading convention for your Agent runtime.
+git clone https://github.com/zisheng-ai/apiyi-image-gen /path/to/your-agent/skills/better-imagegen
 ```
 
 **4. (Dynamic wallpaper only)**
@@ -140,6 +150,7 @@ references/
   static-wallpaper.md         ← static wallpaper PNG pipeline
   dynamic-wallpaper.md        ← Mac dynamic wallpaper: generation + HEIC packaging
   sprite-loop.md              ← RunCat-like frame animation assets
+  codex-pet.md                ← Codex v2 pets: 8×11 atlas, direction semantics, QA
 ```
 
 ---

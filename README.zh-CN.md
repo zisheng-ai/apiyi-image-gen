@@ -1,9 +1,9 @@
 # better-imagegen
 
-**Claude Code 多模型 AI 生图技能** — 由 [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) 驱动，通过 OpenAI 兼容图片接口自动级联 GPT、Gemini 与豆包模型。
+**通用多模型 AI 生图 Skill** — 可接入支持 `SKILL.md` 的 Agent 运行时或直接复用其脚本；由 [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) 驱动，通过 OpenAI 兼容图片接口自动级联 GPT、Gemini 与豆包模型。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude_Code-Skill-blueviolet)](https://claude.ai/code)
+[![Agent Skill](https://img.shields.io/badge/Agent-Skill-blueviolet)](#)
 [![apiyi](https://img.shields.io/badge/Powered_by-apiyi-orange)](https://api.apiyi.com/register/?aff_code=ijv5)
 
 [English](README.md) · [中文](#)
@@ -12,7 +12,7 @@
 
 ## 能做什么
 
-在 Claude Code 里直接说，不需要任何命令或每次配置：
+在任意接入该 Skill 的 Agent 中直接描述需求：
 
 ```
 生成一张东京夜晚街头的电影感女性肖像
@@ -20,6 +20,7 @@
 并行生成 8 张产品图
 做一个 Runcat 风格的菜单栏机器人跑步帧动画
 做一张 Mac 动态壁纸，深海珊瑚礁，白天/夜晚切换
+制作一个兼容 Codex 的宠物：湖獭、毛绒风格、带 16 个看向方向
 ```
 
 技能按图片类型选择工作流，优先使用 GPT，失败时自动降级到 Gemini 和豆包，再完成后处理并保存到 `~/Pictures/better-imagegen/`。
@@ -57,6 +58,7 @@
 | Mac 静态壁纸（4K） | GPT → Gemini → 豆包 | `wallpaper.png`（无损 PNG） |
 | Mac 动态壁纸 | 每帧 GPT → Gemini → 豆包 | `wallpaper-apr.heic`（2 帧，亮/暗模式切换） |
 | Sprite loop 帧动画 | GPT → Gemini | 序列帧 PNG + `preview.gif` |
+| Codex v2 宠物 | GPT → Gemini | 8×11 spritesheet + `pet.json` + QA 产物 |
 | 批量生成（N 张） | 每张独立执行模型级联 | N × `.webp`，并行生成 |
 
 ---
@@ -83,6 +85,12 @@
 
 **输出路径：** `~/Pictures/better-imagegen/sprite-loop/{name}/`
 
+## Codex 兼容宠物（可选目标格式）
+
+这是通用宠物资产流程中的一个可选 adapter：面向 Codex 时，交付 `1536×2288` 的 8×11 v2 spritesheet、`spriteVersionNumber: 2` 的 `pet.json`、16 个连续 look directions，以及 contact sheet、motion preview、direction / chroma / validation QA 产物。技能先锁定宠物身份，再逐行生成和验收；不会自动安装到任何运行时目录，最终安装和动态验证由用户主动完成。
+
+**输出路径：** `~/Pictures/better-imagegen/codex-pet/{pet-id}/`
+
 ---
 
 ## 输出规范
@@ -93,6 +101,7 @@
 | Mac 静态壁纸 | 无损 PNG | `~/Pictures/better-imagegen/wallpaper.png` |
 | Mac 动态壁纸 | 2 帧 HEIC | `~/Pictures/better-imagegen/dynamic-wallpaper/wallpaper-apr.heic` |
 | Sprite loop 帧动画 | PNG 序列帧 + preview GIF | `~/Pictures/better-imagegen/sprite-loop/{name}/` |
+| Codex v2 宠物 | spritesheet + `pet.json` + QA 产物 | `~/Pictures/better-imagegen/codex-pet/{pet-id}/` |
 | Logo | PNG（pngquant） | 项目本地 |
 | 元数据 | JSON | 与图片同目录 |
 
@@ -112,9 +121,10 @@ export APIYI_API_KEY="your-key-here"
 # 加到 ~/.zshrc 永久生效
 ```
 
-**3. 安装技能**
+**3. 安装到你的 Agent Skill 目录**
 ```bash
-git clone https://github.com/zisheng-ai/apiyi-image-gen ~/.claude/skills/apiyi-image-gen
+# 将目录放入你所用 Agent 的 skills 目录，并按该 Agent 的加载约定启用。
+git clone https://github.com/zisheng-ai/apiyi-image-gen /path/to/your-agent/skills/better-imagegen
 ```
 
 **4. 动态壁纸专用依赖**
@@ -139,6 +149,7 @@ references/
   static-wallpaper.md         ← 静态壁纸 PNG 流程
   dynamic-wallpaper.md        ← Mac 动态壁纸：生成 + HEIC 打包
   sprite-loop.md              ← Runcat 类序列帧动画资产
+  codex-pet.md                ← Codex v2 宠物：8×11 atlas、方向语义与 QA
 ```
 
 ---
