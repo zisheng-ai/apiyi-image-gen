@@ -1,0 +1,2 @@
+# Core local image processing used by metadata, transparency, and sprite QA.
+Pillow>=10.0

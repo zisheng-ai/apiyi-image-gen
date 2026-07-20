@@ -34,7 +34,7 @@ SIZE="${REQ_SIZE:-3840x2160}"
 if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$SIZE" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT"
 elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$SIZE" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT"
 elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "$SIZE" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GEMINI"
-elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1600" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1600"
+elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1440" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1440"
 else echo "ALL_MODELS_FAILED"; exit 1
 fi
 
@@ -44,7 +44,7 @@ RESPONSE_FORMAT=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^RESPONSE_FORMAT:/{v=$2} 
 POSTPROCESS_NOTE="lossless png, no webp conversion"
 if [ "$MODEL_USED" = "$MODEL_DOUBAO" ]; then
   strip_doubao_watermark "$OUTPUT_PATH" 3840 2160
-  SIZE="2560x1600 (cropped+resized to 3840x2160)"
+  SIZE="2560x1440 (cropped+resized to 3840x2160)"
   POSTPROCESS_NOTE="doubao watermark crop, resize 3840x2160, lossless png"
 fi
 mv "$OUTPUT_PATH" "$FINAL_PATH"

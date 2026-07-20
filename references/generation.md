@@ -17,6 +17,16 @@ if [ -z "$APIYI_API_KEY" ]; then
 fi
 ```
 
+The local processing pipeline also needs Pillow for response inspection, metadata, transparency,
+and sprite validation. Verify it before spending an API call:
+
+```bash
+python3 -c 'from PIL import Image; print("Pillow ready")' || {
+  echo "⚠ Pillow is required. Run: pip3 install -r requirements.txt"
+  exit 1
+}
+```
+
 ---
 
 ## Model Setup

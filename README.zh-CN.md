@@ -127,7 +127,12 @@ export APIYI_API_KEY="your-key-here"
 git clone https://github.com/zisheng-ai/apiyi-image-gen /path/to/your-agent/skills/better-imagegen
 ```
 
-**4. 动态壁纸专用依赖**
+**4. 安装核心本地依赖**
+```bash
+pip3 install -r requirements.txt
+```
+
+**5. 动态壁纸专用依赖**
 ```bash
 pip3 install pillow-heif
 ```

@@ -128,7 +128,12 @@ export APIYI_API_KEY="your-key-here"
 git clone https://github.com/zisheng-ai/apiyi-image-gen /path/to/your-agent/skills/better-imagegen
 ```
 
-**4. (Dynamic wallpaper only)**
+**4. Install the core local dependency**
+```bash
+pip3 install -r requirements.txt
+```
+
+**5. (Dynamic wallpaper only)**
 ```bash
 pip3 install pillow-heif
 ```

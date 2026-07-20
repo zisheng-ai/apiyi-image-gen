@@ -57,6 +57,21 @@ def main() -> int:
     parser.add_argument("--json-out")
     args = parser.parse_args()
 
+    if args.columns <= 0 or args.rows <= 0:
+        parser.error("--columns and --rows must be positive")
+    if args.frame_count is not None and not 1 <= args.frame_count <= args.columns * args.rows:
+        parser.error("--frame-count must be between 1 and columns × rows")
+    if not 0 < args.guard_ratio < 0.5:
+        parser.error("--guard-ratio must be greater than 0 and less than 0.5")
+    if not 0 <= args.alpha_threshold <= 255:
+        parser.error("--alpha-threshold must be between 0 and 255")
+    if args.chroma_threshold < 0:
+        parser.error("--chroma-threshold must not be negative")
+    if not 0 <= args.detached_ratio <= 1:
+        parser.error("--detached-ratio must be between 0 and 1")
+    if args.min_detached_pixels < 1:
+        parser.error("--min-detached-pixels must be at least 1")
+
     sheet = Image.open(args.sheet).convert("RGBA")
     nominal_cell_width = sheet.width / args.columns
     nominal_cell_height = sheet.height / args.rows
@@ -127,7 +142,9 @@ def main() -> int:
     }
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.json_out:
-        Path(args.json_out).write_text(rendered, encoding="utf-8")
+        output_path = Path(args.json_out)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(rendered, encoding="utf-8")
     print(rendered, end="")
     return 0 if report["ok"] else 1
 

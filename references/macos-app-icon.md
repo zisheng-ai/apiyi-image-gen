@@ -50,11 +50,15 @@ Notes:
 ```bash
 OUT_DIR="${OUT_DIR:-$HOME/Pictures/better-imagegen}"; mkdir -p "$OUT_DIR"
 ART="/tmp/icon_art.png"
-if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
-elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
-elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "$ICON_PROMPT" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GEMINI"
+PROMPT="$ICON_PROMPT"
+if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
+elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "1024x1024" "$ART"); then MODEL_USED="$MODEL_GPT"
+elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "1024x1024" "$ART"); then MODEL_USED="$MODEL_GEMINI"
 else echo "ICON_ART_GENERATION_FAILED"; exit 1
 fi
+SIZE="1024x1024"
+GENERATION_MS=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^ELAPSED_MS:/{v=$2} END{print v+0}')
+RESPONSE_FORMAT=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^RESPONSE_FORMAT:/{v=$2} END{print v}')
 # then feed $ART into Step 1 as SRC (SRC="$ART")
 ```
 
@@ -70,7 +74,7 @@ macOS does **not** round or mask app icons for you — the pixels you ship are e
 in the Dock. Two failure modes to avoid:
 
 1. **AI "app icon" art with baked padding.** Models love to return a rounded tile floating on a
-   solid dark/《light》 background with a drop shadow (e.g. a squircle inset with ~12% margin).
+   solid dark/light background with a drop shadow (e.g. a squircle inset with ~12% margin).
    Ship that as-is and you get a **"tile inside a tile"** — a dark square with a smaller rounded
    card in the middle. Not native.
 2. **Full-bleed square art.** Ship a plain square and macOS shows sharp corners — every other

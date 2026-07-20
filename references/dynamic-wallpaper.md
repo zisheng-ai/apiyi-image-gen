@@ -51,14 +51,14 @@ mkdir -p "$OUT_DIR"
   if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT";    SIZE="3840x2160"
   elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT";    SIZE="3840x2160"
   elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GEMINI"; SIZE="3840x2160"
-  elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1600" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1600"
+  elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1440" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1440"
   else echo "⚠ light — all failed"; exit 1; fi
   GENERATION_MS=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^ELAPSED_MS:/{v=$2} END{print v+0}')
   RESPONSE_FORMAT=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^RESPONSE_FORMAT:/{v=$2} END{print v}')
   POSTPROCESS_NOTE="dynamic wallpaper light frame png"
   if [ "$MODEL_USED" = "$MODEL_DOUBAO" ]; then
     strip_doubao_watermark "$OUTPUT_PATH" 3840 2160
-    SIZE="2560x1600 (cropped+resized to 3840x2160)"
+    SIZE="2560x1440 (cropped+resized to 3840x2160)"
     POSTPROCESS_NOTE="doubao watermark crop, resize 3840x2160, dynamic wallpaper light frame png"
   fi
   write_image_metadata "$OUTPUT_PATH" "$OUT_DIR/light-frame.json" "$MODEL_USED" "$SIZE" "$GENERATION_MS" "$RESPONSE_FORMAT" "$POSTPROCESS_NOTE"
@@ -71,14 +71,14 @@ mkdir -p "$OUT_DIR"
   if   GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT";    SIZE="3840x2160"
   elif GEN_LOG=$(gen_image_apiyi "$MODEL_GPT"    "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GPT";    SIZE="3840x2160"
   elif GEN_LOG=$(gen_image_apiyi "$MODEL_GEMINI" "3840x2160" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_GEMINI"; SIZE="3840x2160"
-  elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1600" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1600"
+  elif GEN_LOG=$(gen_image_apiyi "$MODEL_DOUBAO" "2560x1440" "$OUTPUT_PATH"); then MODEL_USED="$MODEL_DOUBAO"; SIZE="2560x1440"
   else echo "⚠ dark — all failed"; exit 1; fi
   GENERATION_MS=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^ELAPSED_MS:/{v=$2} END{print v+0}')
   RESPONSE_FORMAT=$(printf '%s\n' "$GEN_LOG" | awk -F: '/^RESPONSE_FORMAT:/{v=$2} END{print v}')
   POSTPROCESS_NOTE="dynamic wallpaper dark frame png"
   if [ "$MODEL_USED" = "$MODEL_DOUBAO" ]; then
     strip_doubao_watermark "$OUTPUT_PATH" 3840 2160
-    SIZE="2560x1600 (cropped+resized to 3840x2160)"
+    SIZE="2560x1440 (cropped+resized to 3840x2160)"
     POSTPROCESS_NOTE="doubao watermark crop, resize 3840x2160, dynamic wallpaper dark frame png"
   fi
   write_image_metadata "$OUTPUT_PATH" "$OUT_DIR/dark-frame.json" "$MODEL_USED" "$SIZE" "$GENERATION_MS" "$RESPONSE_FORMAT" "$POSTPROCESS_NOTE"

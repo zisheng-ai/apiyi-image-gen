@@ -18,7 +18,7 @@ Every generated image must be post-processed before being saved as a deliverable
 
 ## WebP Conversion Function
 
-Prefer `cwebp` (fastest); fall back to Pillow. If the WebP output is larger than the source, discard it and copy the PNG.
+Prefer `cwebp` (fastest); fall back to Pillow. Keep the WebP even when it is larger than the source: copying a PNG into a `.webp` path produces a mislabeled, invalid deliverable.
 
 ```bash
 to_webp() {
@@ -26,15 +26,13 @@ to_webp() {
   local before after
   before=$(stat -f%z "$src" 2>/dev/null || stat -c%s "$src")
   if command -v cwebp &>/dev/null; then
-    cwebp -quiet -q "$q" "$src" -o "$dst"
+    cwebp -quiet -q "$q" "$src" -o "$dst" || return 1
   else
-    python3 -c "from PIL import Image; im=Image.open('$src'); im.save('$dst','webp',quality=$q,method=6)"
+    python3 -c "from PIL import Image; im=Image.open('$src'); im.save('$dst','webp',quality=$q,method=6)" || return 1
   fi
   after=$(stat -f%z "$dst" 2>/dev/null || stat -c%s "$dst")
   if [ "$after" -ge "$before" ]; then
-    rm -f "$dst"
-    cp "$src" "$dst"
-    echo "⚠ webp larger than src (${after}B ≥ ${before}B) — kept original"
+    echo "⚠ webp larger than src (${after}B ≥ ${before}B) — retained valid WebP"
   else
     echo "✓ webp q${q}: ${before}B → ${after}B (-$(( (before-after)*100/before ))%)"
   fi

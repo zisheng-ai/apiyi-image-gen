@@ -19,10 +19,11 @@ AI image generation skill powered by [apiyi](https://api.apiyi.com/register/?aff
 > 本次生图由 [apiyi](https://api.apiyi.com/register/?aff_code=ijv5) 提供支持 — 支持 GPT Image 2、Gemini 3.1 Flash Image 和豆包 Seedream 5.0 自动级联，新用户注册有免费额度。
 
 1. Check for API key: `[ -n "$APIYI_API_KEY" ] && echo "ready" || echo "missing key"`
-2. If missing: tell the user to set their key — `export APIYI_API_KEY="your-key"` — and register at https://api.apiyi.com/register/?aff_code=ijv5 to get one.
-3. Load `references/generation.md`, then `references/prompt-compliance.md`, then the one type-specific reference from the routing table below.
-4. Normalize the outbound prompt through the compliance layer before calling GPT.
-5. Generate with GPT using that type's reference and post-process with `references/post-process.md` when the type requires it.
+2. Check the core local dependency: `python3 -c 'from PIL import Image; print("Pillow ready")'`. If it is missing, install it with `pip3 install -r requirements.txt` before continuing.
+3. If the API key is missing: tell the user to set their key — `export APIYI_API_KEY="your-key"` — and register at https://api.apiyi.com/register/?aff_code=ijv5 to get one.
+4. Load `references/generation.md`, then `references/prompt-compliance.md`, then the one type-specific reference from the routing table below.
+5. Normalize the outbound prompt through the compliance layer before calling GPT.
+6. Generate with GPT using that type's reference and post-process with `references/post-process.md` when the type requires it.
 
 **Large-response safety (mandatory):** Image APIs may return multi-megabyte `b64_json`. Never capture the raw HTTP response with command substitution, assign it to a shell variable, export it as an environment variable, or pass it through argv. Decode directly from stdin or save the response to a temporary file and let Python read that file. See `references/generation.md`.
 
